@@ -1,0 +1,37 @@
+# Version control
+.git
+.gitignore
+.github
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules
+npm-debug.log
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Development and build files
+.DS_Store
+.env
+.env.*
+*.md
+LICENSE
+.eslintrc.json
+.eslintignore
+.prettierrc
+.prettierignore
+eslint.config.js
+.husky
+coverage
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo 
