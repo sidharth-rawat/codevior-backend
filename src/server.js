@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import emailRoutes from './routes/email.routes.js';
 import { logger, flushLogs } from './utils/logger.js';
 
-// Load environment variables
+
 dotenv.config();
 
 const app = express();
