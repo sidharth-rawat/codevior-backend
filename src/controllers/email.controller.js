@@ -16,21 +16,44 @@ export const sendEmailController = async (req, res, next) => {
     );
 
     // Validate the request body
+    /*
+        name: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",*/
     const schema = Joi.object({
-      to: Joi.string().email().required().messages({
+      // to: Joi.string().email().required().messages({
+      //   'string.email': 'Please provide a valid email address',
+      //   'any.required': 'Recipient email address is required',
+      // }),
+      // subject: Joi.string().required().messages({
+      //   'any.required': 'Email subject is required',
+      // }),
+      // body: Joi.string().required().messages({
+      //   'any.required': 'Email body is required',
+      // }),
+      name: Joi.string().required().messages({
+        'any.required': 'Name is required',
+      }),
+      email: Joi.string().email().required().messages({
         'string.email': 'Please provide a valid email address',
-        'any.required': 'Recipient email address is required',
+        'any.required': 'Email is required',
       }),
-      subject: Joi.string().required().messages({
-        'any.required': 'Email subject is required',
+      phone: Joi.string().required().messages({
+        'any.required': 'Phone is required',
       }),
-      body: Joi.string().required().messages({
-        'any.required': 'Email body is required',
+      service: Joi.string().required().messages({
+        'any.required': 'Service is required',
       }),
+      message: Joi.string().required().messages({
+        'any.required': 'Message is required',
+      }),
+
       // Optional fields
-      cc: Joi.string().email(),
-      bcc: Joi.string().email(),
-      attachments: Joi.array().items(Joi.object()),
+      cc: Joi.string().email().optional(),
+      bcc: Joi.string().email().optional(),
+      attachments: Joi.array().items(Joi.object()).optional(),
     });
 
     const { error, value } = schema.validate(req.body, { abortEarly: false });
@@ -50,7 +73,7 @@ export const sendEmailController = async (req, res, next) => {
     // Send the email
     const info = await sendEmail(value);
 
-    logger.info(`Email sent successfully to ${value.to}, ID: ${info.messageId}`);
+    logger.info(`Email sent successfully to ${value.email}, ID: ${info.messageId}`);
 
     return res.status(StatusCodes.OK).json({
       success: true,

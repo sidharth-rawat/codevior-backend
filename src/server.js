@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import emailRoutes from './routes/email.routes.js';
 import { logger, flushLogs } from './utils/logger.js';
 
-
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -37,19 +37,22 @@ app.use('/api', emailRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  console.log('hello');
+
   res.status(200).send('Server is running');
 });
 
+// !Need to work on this endpoint
 // Manual log flush endpoint (protected)
 app.post('/api/logs/flush', async (req, res) => {
   try {
     // This could be enhanced with proper authentication
-    if (req.ip !== '127.0.0.1' && req.ip !== '::1') {
-      return res.status(403).json({
-        success: false,
-        message: 'This endpoint can only be called locally',
-      });
-    }
+    // if (req.ip !== '127.0.0.1' && req.ip !== '::1') {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: 'This endpoint can only be called locally',
+    //   });
+    // }
 
     logger.info('Manual log flush requested');
     await flushLogs();

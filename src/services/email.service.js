@@ -58,17 +58,37 @@ const transporter = createTransporter();
 export const sendEmail = async emailData => {
   try {
     logger.debug(`Preparing to send email to ${emailData.to}`);
+    const htmlBody = `
+    <p><strong>New Service Inquiry Received</strong></p>
+    <p>
+      Name: ${emailData.name}<br>
+      Email: ${emailData.email}<br>
+      Phone: ${emailData.phone}<br>
+      Service: ${emailData.service}<br>
+      Message: ${emailData.message}
+    </p>
+  `;
 
-    // Email options
+    const plainTextBody = `
+  New Service Inquiry Received
+  
+  Name: ${emailData.name}
+  Email: ${emailData.email}
+  Phone: ${emailData.phone}
+  Service: ${emailData.service}
+  Message: ${emailData.message}
+  `;
+
     const mailOptions = {
-      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to: emailData.to,
-      subject: emailData.subject,
-      text: emailData.body,
-      // If you want to send HTML email
-      html: emailData.body.replace(/\n/g, '<br>'),
+      from: emailData.email,
+      to: process.env.EMAIL_USER,
+      subject: "You've Got a New Service Query!",
+      text: plainTextBody, // plain text version
+      html: htmlBody,
+      cc: process.env.EMAIL_FROM, // HTML version
     };
 
+    logger.debug('Mail options', { mailOptions });
     // Add optional fields if provided
     if (emailData.cc) mailOptions.cc = emailData.cc;
     if (emailData.bcc) mailOptions.bcc = emailData.bcc;

@@ -1,0 +1,17 @@
+POST http://localhost:6969/api/send-email
+Content-Type: application/json
+
+{
+    "to":"sidharthrawat20@gmail.com",
+    "subject":"Test subject",
+    "body":"Test body"
+}
+
+
+###
+GET http://localhost:6969/health
+
+###
+POST http://localhost:6969/api/logs/flush
+Content-Type: application/json
+
