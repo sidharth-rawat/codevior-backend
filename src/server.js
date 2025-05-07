@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
+import config from './config/index.js';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -9,14 +9,13 @@ import morgan from 'morgan';
 import emailRoutes from './routes/email.routes.js';
 import { logger, flushLogs } from './utils/logger.js';
 
-// Load environment variables
-dotenv.config();
+const { port, corsOrigin } = config;
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = port || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: corsOrigin }));
 app.use(helmet()); // Add security headers
 app.use(compression()); // Compress responses
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } })); // HTTP request logging

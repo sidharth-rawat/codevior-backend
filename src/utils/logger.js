@@ -1,11 +1,12 @@
 import winston from 'winston';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import config from '../config/index.js';
 // ES Module fix for __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const { env } = config;
 // Define log formats
 const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -19,7 +20,7 @@ const fileTransports = [];
 
 // Define logger
 export const logger = winston.createLogger({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  level: env === 'production' ? 'info' : 'debug',
   format: logFormat,
   defaultMeta: { service: 'email-api' },
   transports: [
@@ -145,6 +146,6 @@ process.on('SIGINT', async () => {
 });
 
 // If we're not in production, also log to the console
-if (process.env.NODE_ENV !== 'production') {
+if (env !== 'production') {
   logger.debug('Logging initialized at debug level');
 }

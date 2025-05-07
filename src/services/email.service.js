@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import { logger } from '../utils/logger.js';
+import config from '../config/index.js';
 
-dotenv.config();
+const { email } = config;
 
 /**
  * Create and cache nodemailer transporter
@@ -12,12 +13,12 @@ const createTransporter = () => {
     logger.info('Creating email transporter');
 
     const transporterConfig = {
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.EMAIL_PORT || '587', 10),
-      secure: process.env.EMAIL_SECURE === 'true',
+      host: email.host || 'smtp.gmail.com',
+      port: parseInt(email.port || '587', 10),
+      secure: email.secure === 'true',
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: email.user,
+        pass: email.pass,
       },
       tls: {
         // Do not fail on invalid certs
@@ -91,11 +92,11 @@ export const sendEmail = async emailData => {
 
     const mailOptions = {
       from: emailData.email,
-      to: process.env.EMAIL_USER,
+      to: email.user,
       subject: "You've Got a New Service Query!",
       text: plainTextBody, // plain text version
       html: htmlBody,
-      cc: process.env.EMAIL_FROM, // HTML version
+      cc: email.from, // HTML version
     };
 
     logger.debug('Mail options', { mailOptions });
