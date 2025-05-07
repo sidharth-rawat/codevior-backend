@@ -83,27 +83,36 @@ export const flushLogs = async () => {
     let flushedCount = 0;
     const totalToFlush = fileTransports.length;
 
-    // For each file transport, call the flush method
+    // For each file transport, call the flush method if it exists
     fileTransports.forEach(transport => {
-      transport.on('flush', () => {
-        flushedCount++;
+      if (typeof transport.flush === 'function') {
+        transport.on('flush', () => {
+          flushedCount++;
 
-        // Once all are flushed, resolve the promise
+          // Once all are flushed, resolve the promise
+          if (flushedCount === totalToFlush) {
+            logger.info('All logs flushed successfully');
+            resolve();
+          }
+        });
+
+        // Initiate the flush
+        transport.flush();
+      } else {
+        // If transport doesn't support flush, count it as flushed
+        flushedCount++;
         if (flushedCount === totalToFlush) {
-          logger.info('All logs flushed successfully');
+          logger.info('All logs processed successfully');
           resolve();
         }
-      });
-
-      // Initiate the flush
-      transport.flush();
+      }
     });
 
     // Set a timeout in case the flush never completes
     setTimeout(() => {
       if (flushedCount < totalToFlush) {
         const error = new Error(
-          `Timed out flushing logs: ${flushedCount}/${totalToFlush} completed`
+          `Timed out processing logs: ${flushedCount}/${totalToFlush} completed`
         );
         logger.error(error.message);
         reject(error);

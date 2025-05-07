@@ -19,14 +19,20 @@ const createTransporter = () => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        // Do not fail on invalid certs
+        rejectUnauthorized: false,
+        // Use TLS 1.2
+        minVersion: 'TLSv1.2',
+      },
     };
 
     // Add additional configuration for specific providers
     if (transporterConfig.host.includes('gmail')) {
       logger.info('Using Gmail configuration');
-      transporterConfig.tls = {
-        rejectUnauthorized: false,
-      };
+      // Gmail specific settings
+      transporterConfig.secure = false; // Use STARTTLS
+      transporterConfig.port = 587; // Gmail's STARTTLS port
     }
 
     const transporter = nodemailer.createTransport(transporterConfig);
@@ -35,6 +41,10 @@ const createTransporter = () => {
     transporter.verify(function (error, _success) {
       if (error) {
         logger.error(`Transporter verification failed: ${error.message}`);
+        logger.error('Please check your email configuration settings:');
+        logger.error(`Host: ${transporterConfig.host}`);
+        logger.error(`Port: ${transporterConfig.port}`);
+        logger.error(`Secure: ${transporterConfig.secure}`);
       } else {
         logger.info('Email transporter is ready to send messages');
       }
