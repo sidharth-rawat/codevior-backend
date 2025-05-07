@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+
 import { logger } from '../utils/logger.js';
 import config from '../config/index.js';
 
@@ -10,22 +10,23 @@ const { email } = config;
  */
 const createTransporter = () => {
   try {
-    logger.info('Creating email transporter');
+    logger.info('Creating email transporter',email,email.auth);
+console.log(email.auth);
 
     const transporterConfig = {
       host: email.host || 'smtp.gmail.com',
       port: parseInt(email.port || '587', 10),
       secure: email.secure === 'true',
       auth: {
-        user: email.user,
-        pass: email.pass,
+        user: email.auth.user,
+        pass: email.auth.pass,
       },
-      tls: {
-        // Do not fail on invalid certs
-        rejectUnauthorized: false,
-        // Use TLS 1.2
-        minVersion: 'TLSv1.2',
-      },
+      // tls: {
+      //   // Do not fail on invalid certs
+      //   rejectUnauthorized: false,
+      //   // Use TLS 1.2
+      //   minVersion: 'TLSv1.2',
+      // },
     };
 
     // Add additional configuration for specific providers
