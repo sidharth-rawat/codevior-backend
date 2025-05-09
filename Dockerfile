@@ -51,5 +51,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 EXPOSE 3002
 EXPOSE 6002
 
+EXPOSE 587
+
 # Command to run Supervisor
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

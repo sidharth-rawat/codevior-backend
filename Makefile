@@ -27,7 +27,7 @@ build-nginx:
 
 # Run Node.js app container
 run-node:
-	docker run -d --name $(NODE_APP_CONTAINER) -p $(NODE_APP_PORT):$(NODE_APP_PORT) -p $(NODE_SOCKET_PORT):$(NODE_SOCKET_PORT) -v /home/ubuntu/logs:/var/log/supervisord $(NODE_APP_IMAGE)
+	docker run -d --name $(NODE_APP_CONTAINER) -p $(NODE_APP_PORT):$(NODE_APP_PORT) -p $(NODE_SOCKET_PORT):$(NODE_SOCKET_PORT) $(NODE_APP_IMAGE)
 
 
 # Run Nginx container

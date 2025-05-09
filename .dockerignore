@@ -18,8 +18,6 @@ Dockerfile
 
 # Development and build files
 .DS_Store
-.env
-.env.*
 *.md
 LICENSE
 .eslintrc.json
