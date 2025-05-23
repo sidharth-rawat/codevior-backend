@@ -46,3 +46,6 @@ coverage/
 # Optional: ignore local dev SSL certs
 *.pem
 *.key
+
+
+*/.github/workflows/deploy.yml
