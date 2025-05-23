@@ -23,16 +23,6 @@ export const sendEmailController = async (req, res, next) => {
     service: "",
     message: "",*/
     const schema = Joi.object({
-      // to: Joi.string().email().required().messages({
-      //   'string.email': 'Please provide a valid email address',
-      //   'any.required': 'Recipient email address is required',
-      // }),
-      // subject: Joi.string().required().messages({
-      //   'any.required': 'Email subject is required',
-      // }),
-      // body: Joi.string().required().messages({
-      //   'any.required': 'Email body is required',
-      // }),
       name: Joi.string().required().messages({
         'any.required': 'Name is required',
       }),

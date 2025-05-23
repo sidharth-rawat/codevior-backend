@@ -10,8 +10,8 @@ const { email } = config;
  */
 const createTransporter = () => {
   try {
-    logger.info('Creating email transporter',email,email.auth);
-console.log(email.auth);
+    logger.info('Creating email transporter', email, email.auth);
+    console.log(email.auth);
 
     const transporterConfig = {
       host: email.host || 'smtp.gmail.com',
@@ -69,7 +69,9 @@ const transporter = createTransporter();
  */
 export const sendEmail = async emailData => {
   try {
-    logger.debug(`Preparing to send email to ${emailData.to}`);
+    console.log(JSON.stringify(emailData));
+
+    logger.debug(`Preparing to send email to ${emailData.email}, ${emailData}`);
     const htmlBody = `
     <p><strong>New Service Inquiry Received</strong></p>
     <p>
@@ -107,7 +109,7 @@ export const sendEmail = async emailData => {
     if (emailData.attachments) mailOptions.attachments = emailData.attachments;
 
     // Send the email
-    logger.debug('Sending email', { to: emailData.to, subject: emailData.subject });
+    logger.debug('Sending email', { to: emailData.email, subject: emailData.subject });
     const info = await transporter.sendMail(mailOptions);
 
     logger.info(`Email sent successfully: ${info.messageId}`);

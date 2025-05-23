@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -16,7 +16,7 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000).description('Application port'),
     CORS_ORIGIN: Joi.string().valid('*').required(),
-   
+
     // Email configuration
     EMAIL_HOST: Joi.string().required().description('SMTP host'),
     EMAIL_PORT: Joi.number().required().description('SMTP port'),
@@ -27,20 +27,19 @@ const envVarsSchema = Joi.object()
   })
   .unknown();
 
-
-const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
-
+const { value: envVars, error } = envVarsSchema
+  .prefs({ errors: { label: 'key' } })
+  .validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-
 export default {
   env: envVars.NODE_ENV,
   corsOrigin: envVars.CORS_ORIGIN,
   port: envVars.PORT,
- 
+
   // Email configuration
   email: {
     host: envVars.EMAIL_HOST,

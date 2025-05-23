@@ -36,7 +36,7 @@ app.use('/api', emailRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  console.log('hello');
+  console.log('hello world');
 
   res.status(200).send('Server is running');
 });
