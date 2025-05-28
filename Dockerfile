@@ -34,7 +34,7 @@ RUN curl -s https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o
         chmod +x /usr/local/bin/ngrok && \
         rm ngrok.zip
 # Set the working directory
-RUN ngrok config add-authtoken 2xiyVLk8KrdJRL7LXBJW3bSO8DS_6p6JLdv8XFdEzBt2qkN3F
+RUN ngrok config authtoken 2xiyVLk8KrdJRL7LXBJW3bSO8DS_6p6JLdv8XFdEzBt2qkN3F
 
 WORKDIR /usr/src/app
 
